@@ -7,38 +7,18 @@ import { Checkbox, Table, Row, Col } from 'antd';
 function App() {
 
   const api = "http://localhost:5000"
-  const [dataSource, setDataSource] = useState(null)
+  const [data, setData] = useState(null)
 
 
   async function getDataSource() {
     console.log("getting data..")
     axios.get(`${api}/notes`).then( res => {
-      setDataSource(res.data)
+      //console.log(res)
+      setData(res.data)
     })
   }
 
-  dataSource ? console.log("data: ", dataSource) : getDataSource()
-  //getDataSource()
-
-  const columns = [
-    {
-      title: 'Notes',
-      dataIndex: 'notes',
-      key: 'notes'
-    },    
-    {
-      title: 'Tags',
-      dataIndex: 'tags',
-      key: 'tags'
-    },    
-    {
-      title: 'Action',
-      dataIndex: 'action',
-      key: 'action'
-    },
-  ]
-
-
+  data ? console.log("data: ", data) : getDataSource()
 
   return (
     <>
@@ -46,10 +26,9 @@ function App() {
 
       <Row style={{marginLeft: 50}}>
         <Col span={6}>
-          <Table columns={columns} dataSource={dataSource ? dataSource : null}/>
+          <Table columns={data ? data.columns : null} dataSource={data ? data.data : null}/>
         </Col>
       </Row>
-
 
     </>
 

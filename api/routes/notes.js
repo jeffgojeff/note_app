@@ -1,7 +1,23 @@
 var express = require('express');
 var router = express.Router();
 
-
+const columns = [
+  {
+    title: 'Notes',
+    dataIndex: 'notes',
+    key: 'notes'
+  },    
+  {
+    title: 'Tags',
+    dataIndex: 'tags',
+    key: 'tags'
+  },    
+  {
+    title: 'Action',
+    dataIndex: 'action',
+    key: 'action'
+  },
+]
 const dataSource = [
   {
     key: '1',
@@ -23,31 +39,16 @@ const dataSource = [
   }
 ]
 
-/* GET users listing. */
+const data = {
+  columns: columns,
+  data: dataSource
+}
+
+
+
 router.get('/', function(req, res, next) {
-
-
-
-  res.send(dataSource);
-
-
-
+  res.send(data);
 });
 
 module.exports = router;
 
-
-
-// app.use(function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "YOUR-DOMAIN.TLD"); // update to match the domain you will make the request from
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   next();
-// });
-
-// app.get('/', function(req, res, next) {
-//   // Handle the get for this route
-// });
-
-// app.post('/', function(req, res, next) {
-//  // Handle the post for this route
-// });
