@@ -1,10 +1,24 @@
-import logo from './logo.svg';
+import React, {useState} from 'react'
 import './App.css';
 import 'antd/dist/antd.css';
+import axios from 'axios'
 import { Checkbox, Table, Row, Col } from 'antd';
 
 function App() {
 
+  const api = "http://localhost:5000"
+  const [dataSource, setDataSource] = useState(null)
+
+
+  async function getDataSource() {
+    console.log("getting data..")
+    axios.get(`${api}/notes`).then( res => {
+      setDataSource(res.data)
+    })
+  }
+
+  dataSource ? console.log("data: ", dataSource) : getDataSource()
+  //getDataSource()
 
   const columns = [
     {
@@ -24,27 +38,6 @@ function App() {
     },
   ]
 
-  const dataSource = [
-    {
-      key: '1',
-      notes: 'hello',
-      tags: 'hi',
-      action: 'les goo'
-    },
-    {
-      key: '2',
-      notes: 'world',
-      tags: 'wo',
-      action: 'woooooo'
-    },
-    {
-      key: '3',
-      notes: '123',
-      tags: 'number',
-      action: 'chomp chomp'
-    }
-  ]
-
 
 
   return (
@@ -53,7 +46,7 @@ function App() {
 
       <Row style={{marginLeft: 50}}>
         <Col span={6}>
-          <Table columns={columns} dataSource={dataSource}/>
+          <Table columns={columns} dataSource={dataSource ? dataSource : null}/>
         </Col>
       </Row>
 
