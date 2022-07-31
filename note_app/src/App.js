@@ -5,6 +5,8 @@ import axios from 'axios'
 import { Checkbox, Table, Row, Col, Button, Modal, Form, Input, Card} from 'antd';
 import { PlusOutlined } from '@ant-design/icons'
 import Cards from './Components/cards.js'
+import NotesForm from './Components/notesForm.js'
+import TodoForm from './Components/todoForm.js'
 
 function App() {
 
@@ -13,9 +15,9 @@ function App() {
   const [columns, setColumns] = useState(null)
   const [count, setCount] = useState(4)
   const [modal, setModal] = useState(false)
+  const [notes, setNotes] = useState(false)
 
-
-  
+  // const [todoModal, toModal] = useState(false)
 
 
   async function getDataSource() {
@@ -51,7 +53,13 @@ function App() {
   };
 
 
-  const clickModal = () => {
+  const clickNotes = () => {
+    setNotes(true)
+    setModal(true)
+  }
+  
+  const clickTodo = () => {
+    setNotes(false)
     setModal(true)
   }
 
@@ -63,6 +71,7 @@ function App() {
 
         <Col span={10}>
           <Card title="To Do List">
+            <Button onClick={clickTodo} style={{marginBottom: 5, marginTop: -5}}> <PlusOutlined/> </Button>
             <Table columns={columns ? columns : null} dataSource={data ? data : null}/>
           </Card>
         </Col>
@@ -71,35 +80,21 @@ function App() {
           <Card title="Notes">
               <Cards data={data ? data : null}/>
               <Card.Grid hoverable={true}>
-                <Button onClick={clickModal}> <PlusOutlined/> </Button>
+                <Button onClick={clickNotes}> <PlusOutlined/> </Button>
               </Card.Grid>
           </Card>
         </Col>
       </Row>
 
       <Modal 
-        title="Add Note" 
+        title={notes ? "Add Note" : "Add Todo" } 
         visible={modal} 
-        // onOk={handleOk} 
         onCancel={handleCancel}
         footer= {[]}
         >
-        <Form onFinish={onFinish} labelCol={{span: 4}} wrapperCol={{span: 16}}>
-          <Form.Item label="Notes" name="notes">
-            <Input />
-          </Form.Item>
-          <Form.Item label="Tags" name="tags">
-            <Input />
-          </Form.Item>
-          <Form.Item label="Action" name="action">
-            <Input />
-          </Form.Item>
-          <Form.Item wrapperCol={{offset: 8,  span: 16 }}>
-            <Button type="primary" htmlType="submit" onClick={handleOk} style={{marginRight: 10}}> Submit </Button>
-            <Button key="back" onClick={handleCancel}>Cancel</Button>
-          </Form.Item>
-
-        </Form>
+          {notes ? 
+          <NotesForm onFinish={onFinish} handleOk={handleOk} handleCancel={handleCancel} /> 
+          : <TodoForm onFinish={onFinish} handleOk={handleOk} handleCancel={handleCancel}/> }
       </Modal>
 
 
