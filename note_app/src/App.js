@@ -2,8 +2,9 @@ import React, {useState} from 'react'
 import './App.css';
 import 'antd/dist/antd.css';
 import axios from 'axios'
-import { Checkbox, Table, Row, Col, Button, Modal, Form, Input, } from 'antd';
+import { Checkbox, Table, Row, Col, Button, Modal, Form, Input, Card} from 'antd';
 import { PlusOutlined } from '@ant-design/icons'
+import Cards from './Components/cards.js'
 
 function App() {
 
@@ -12,6 +13,9 @@ function App() {
   const [columns, setColumns] = useState(null)
   const [count, setCount] = useState(4)
   const [modal, setModal] = useState(false)
+
+
+  
 
 
   async function getDataSource() {
@@ -23,18 +27,8 @@ function App() {
     })
   }
 
+  data ? console.log("data: ", data) : getDataSource()
 
-  const clickModal = () => {
-    setModal(true)
-  }
-
-  const handleOk = () => {
-    setModal(false);
-  };
-
-  const handleCancel = () => {
-    setModal(false);
-  };
 
   const onFinish = (values) => {
     console.log("onFinish: ", values)
@@ -48,26 +42,41 @@ function App() {
     setData([...data, add])
   }
 
+  const handleOk = () => {
+    setModal(false);
+  };
+
+  const handleCancel = () => {
+    setModal(false);
+  };
 
 
-  data ? console.log("data: ", data) : getDataSource()
+  const clickModal = () => {
+    setModal(true)
+  }
+
 
   return (
     <>
       <h1 style={{marginLeft: 10}}>Notes App</h1>
+      <Row gutter={[16, 16]} style={{marginLeft: 10, marginRight: 10}}>
 
-      <Row style={{marginLeft: 50, marginBottom: 10}}>
-        <Col span={6}>
-          <Button type="primary" onClick={clickModal}><PlusOutlined/></Button>
+        <Col span={10}>
+          <Card title="To Do List">
+            <Table columns={columns ? columns : null} dataSource={data ? data : null}/>
+          </Card>
+        </Col>
+
+        <Col span={14}>
+          <Card title="Notes">
+              <Cards data={data ? data : null}/>
+              <Card.Grid hoverable={true}>
+                <Button onClick={clickModal}> <PlusOutlined/> </Button>
+              </Card.Grid>
+          </Card>
         </Col>
       </Row>
-      <Row style={{marginLeft: 50}}>
-        <Col span={8}>
-          <Table columns={columns ? columns : null} dataSource={data ? data : null}/>
-        </Col>
-      </Row>
 
-      
       <Modal 
         title="Add Note" 
         visible={modal} 
@@ -92,6 +101,8 @@ function App() {
 
         </Form>
       </Modal>
+
+
 
     </>
 
