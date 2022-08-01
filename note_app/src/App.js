@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import './App.css';
 import 'antd/dist/antd.css';
 import axios from 'axios'
-import { Checkbox, Table, Row, Col, Button, Modal, Form, Card, message, Popconfirm} from 'antd';
+import { Checkbox, Table, Row, Col, Button, Modal, Form, Card, message, Popconfirm, Tag} from 'antd';
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 import Cards from './Components/cards.js'
 import NotesForm from './Components/notesForm.js'
@@ -22,21 +22,43 @@ function App() {
   const [notes, setNotes] = useState(false)
   const [form] = Form.useForm();
 
-  const columns2 = [
+  const columns = [
     {
       title: 'Notes',
       dataIndex: 'notes',
       key: 'notes'
     },    
     {
-      title: 'Tags',
+      title: 'Priority',
       dataIndex: 'tags',
-      key: 'tags'
+      key: 'tags',
+      align: 'right',
+      render: (_, {tags}) => (
+        <>
+          {tags ? tags.map((tag) => {
+            let color = 'blue'
+            console.log("tag: ", tag)
+            if(tag === 'medium')
+              color = 'yellow'
+            else if(tag === 'high')
+              color = 'volcano'
+            else if(tag === 'grocery')
+              color = 'green'
+            return(
+              <Tag color={color} key={tag}>
+                {tag.toUpperCase()}
+              </Tag>
+          )}
+
+          ) : []}
+      </>
+      )
     },    
     {
       title: 'Action',
       dataIndex: 'action',
       key: 'action',
+      align: 'right', 
       render: (_, record) => 
         <Popconfirm title="Sure to delete?" onConfirm={() => handleTodoDelete(record.key)}>
           <Button icon={<DeleteOutlined/>} shape="circle" ></Button>
@@ -96,14 +118,11 @@ function App() {
     form.resetFields()
     console.log("notesData: ", notesData)
   }
-
-  const clickNotes = () => {
-    setNotes(true)
-    setModal(true)
-  }
   
-  const clickTodo = () => {
-    setNotes(false)
+  // isNotes will be true for modal with notes fields
+  //         will be false for modal for todo list
+  const clickModal = (isNotes) => {
+    setNotes(isNotes)
     setModal(true)
   }
 
@@ -130,8 +149,8 @@ function App() {
 
         <Col span={10}>
           <Card title="To Do List">
-            <Button onClick={clickTodo} style={{marginBottom: 5, marginTop: -5}}> <PlusOutlined/> </Button>
-            <Table columns={columns2 ? columns2 : null} dataSource={todoData ? todoData : null}/>
+            <Button onClick={() => clickModal(false)} style={{marginBottom: 5, marginTop: -5}}> <PlusOutlined/> </Button>
+            <Table columns={columns ? columns : null} dataSource={todoData ? todoData : null}/>
           </Card>
         </Col>
 
@@ -139,7 +158,7 @@ function App() {
           <Card title="Notes">
               <Cards data={notesData ? notesData : null} onClick={handleNotesDelete}/>
               <Card.Grid hoverable={true}>
-                <Button onClick={clickNotes}> <PlusOutlined/> </Button>
+                <Button onClick={() => clickModal(true)}> <PlusOutlined/> </Button>
               </Card.Grid>
           </Card>
         </Col>

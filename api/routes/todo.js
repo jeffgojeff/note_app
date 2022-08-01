@@ -21,22 +21,28 @@ const columns = [
 ]
 const dataSource = [
   {
-    key: '1',
+    key: '0',
     notes: 'hello',
-    tags: 'hi',
-    action: 'les goo'
+    tags: ['high'],
+    action: ''
   },
   {
-    key: '2',
+    key: '1',
     notes: 'world',
-    tags: 'wo',
+    tags: ['medium'],
     action: 'woooooo'
   },
   {
-    key: '3',
+    key: '2',
     notes: '123',
-    tags: 'number',
-    action: 'chomp chomp'
+    tags: ['low'],
+    action: ''
+  },
+  {
+    key: '4',
+    notes: 'do stuff!',
+    tags: ['grocery'],
+    action: ''
   }
 ]
 
