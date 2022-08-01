@@ -10,7 +10,7 @@ function Cards(props) {
 
     return props.data ? props.data.map( x => {
           return(
-                <Card.Grid title={x.key} key={x.key} hoverable={true}>
+                <Card.Grid key={x.key} >
                     {x.note}
                     <br/>
                     <Button 
