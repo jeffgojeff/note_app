@@ -1,25 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-const columns = [
-  {
-    title: 'Notes',
-    dataIndex: 'notes',
-    key: 'notes'
-  },    
-  {
-    title: 'Tags',
-    dataIndex: 'tags',
-    key: 'tags'
-  },    
-  {
-    title: 'Action',
-    dataIndex: 'action',
-    key: 'action',
-  }
-
-]
-const dataSource = [
+const data = [
   {
     key: '0',
     notes: 'hello',
@@ -63,11 +45,6 @@ const dataSource = [
     action: ''
   },
 ]
-
-const data = {
-  columns: columns,
-  data: dataSource
-}
 
 
 

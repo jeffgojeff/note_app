@@ -40,9 +40,6 @@ function TodoForm(props) {
         >
             {tagOptions}
         </Form.Item>
-        <Form.Item label="Action" name="action">
-            <Input />
-        </Form.Item>
         <Form.Item wrapperCol={{offset: 8,  span: 16 }}>
             <Button type="primary" htmlType="submit" onClick={() => props.set(false)} style={{marginRight: 10}}> Submit </Button>
             <Button key="back" onClick={() => props.set(false)}>Cancel</Button>
