@@ -21,23 +21,47 @@ const columns = [
 ]
 const dataSource = [
   {
-    key: '1',
+    key: '0',
     notes: 'hello',
-    tags: 'hi',
-    action: 'les goo'
+    tags: ['high'],
+    priority: 0,
+    action: '',
   },
   {
-    key: '2',
+    key: '1',
     notes: 'world',
-    tags: 'wo',
+    tags: ['medium'],
+    priority: 1,
     action: 'woooooo'
   },
   {
-    key: '3',
+    key: '2',
     notes: '123',
-    tags: 'number',
-    action: 'chomp chomp'
-  }
+    tags: ['low'],
+    priority: 2,
+    action: ''
+  },
+  {
+    key: '3',
+    notes: 'hello',
+    tags: ['high'],
+    priority: 0,
+    action: ''
+  },
+  {
+    key: '4',
+    notes: 'do stuff!',
+    tags: ['grocery'],
+    priority: 4,
+    action: ''
+  },
+  {
+    key: '5',
+    notes: '123',
+    tags: ['reminder'],
+    priority: 3,
+    action: ''
+  },
 ]
 
 const data = {

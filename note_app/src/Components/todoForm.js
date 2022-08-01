@@ -1,8 +1,18 @@
 import 'antd/dist/antd.css';
-import {  Form, Input, Button } from 'antd';
-
+import {  Form, Input, Button, Select } from 'antd';
+const {Option} = Select
 
 function TodoForm(props) {
+
+    const tagOptions = (
+        <Select>
+            <Option value='high'>High Priority</Option>
+            <Option value='medium'>Medium Priority</Option>
+            <Option value='low'>Low Priority</Option>
+            <Option value='reminder'>Reminder</Option>
+            <Option value='grocery'>Grocery Item</Option>
+      </Select>
+    )
 
     return (
     <Form onFinish={props.onFinish} labelCol={{span: 4}} wrapperCol={{span: 16}} form={props.form}>
@@ -16,10 +26,19 @@ function TodoForm(props) {
                 }
             ]}
         >
-            <Input />
+            <Input/>
         </Form.Item>
-        <Form.Item label="Tags" name="tags">
-            <Input />
+        <Form.Item 
+            label="Tags" 
+            name="tags"
+            rules={[
+                {
+                    required: true,
+                    message: "Please select a tag"
+                }
+            ]}
+        >
+            {tagOptions}
         </Form.Item>
         <Form.Item label="Action" name="action">
             <Input />

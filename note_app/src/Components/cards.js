@@ -8,7 +8,6 @@ import { DeleteOutlined } from '@ant-design/icons'
 
 function Cards(props) {
 
-    console.log(props)
     return props.data ? props.data.map( x => {
           return(
                 <Card.Grid title={x.key} key={x.key} hoverable={true}>
