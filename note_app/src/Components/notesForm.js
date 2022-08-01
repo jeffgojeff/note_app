@@ -11,12 +11,6 @@ function NotesForm(props) {
         <Form.Item label="Notes" name="notes">
             <Input />
         </Form.Item>
-        <Form.Item label="Tags" name="tags">
-            <Input />
-        </Form.Item>
-        <Form.Item label="Action" name="action">
-            <Input />
-        </Form.Item>
         <Form.Item wrapperCol={{offset: 8,  span: 16 }}>
             <Button type="primary" htmlType="submit" onClick={props.handleOk} style={{marginRight: 10}}> Submit </Button>
             <Button key="back" onClick={props.handleCancel}>Cancel</Button>
