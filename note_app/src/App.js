@@ -15,7 +15,7 @@ function App() {
   const api = "http://localhost:5000"
   const [notesData, setNotesData] = useState(null)
   const [todoData, setTodoData] = useState(null)
-  const [toDoCount, setTodoCount] = useState(4)
+  const [toDoCount, setTodoCount] = useState(6)
   const [notesCount, setNotesCount] = useState(5)
 
   const [modal, setModal] = useState(false)
@@ -33,24 +33,51 @@ function App() {
       dataIndex: 'tags',
       key: 'tags',
       align: 'right',
+      sorter: (a, b) => a.priority - b.priority, 
+      //a is selected filter b is the item item
+      onFilter: (a, b) => a === b.tags[0],
+      defaultSortOrder: 'ascend',
+      filters: [
+        {
+          text: 'High',
+          value: 'high'
+        },
+        {
+          text: 'Medium',
+          value: 'medium'
+        },
+        {
+          text: 'Low',
+          value: 'low'
+        },
+        {
+          text: 'Reminder',
+          value: 'reminder'
+        },
+        {
+          text: 'Grocery',
+          value: 'grocery'
+        },
+      ],
       render: (_, {tags}) => (
         <>
           {tags ? tags.map((tag) => {
             let color = 'blue'
-            console.log("tag: ", tag)
-            if(tag === 'medium')
-              color = 'yellow'
-            else if(tag === 'high')
-              color = 'volcano'
-            else if(tag === 'grocery')
-              color = 'green'
-            return(
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-          )}
-
-          ) : []}
+            if(isNaN(tag)){
+              if(tag === 'medium')
+                color = 'yellow'
+              else if(tag === 'high')
+                color = 'volcano'
+              else if(tag === 'grocery')
+                color = 'green'
+              else if(tag === 'reminder')
+                color = 'purple'
+              return(
+                <Tag color={color} key={tag}>
+                  {tag.toUpperCase()}
+                </Tag>
+            )}
+          }) : []}
       </>
       )
     },    
@@ -96,18 +123,30 @@ function App() {
 
 
   const onTodoFinish = (values) => {
+    console.log("values: ", values)
+    let pri = -1
+    if(values.tags === 'high')
+      pri = 0
+    else if(values.tags === 'medium')
+      pri = 1
+    else if(values.tags === 'low')
+      pri = 2
+    else if(values.tags === 'reminder')
+      pri = 3
+    else
+      pri = 4
     const add = {
       key: toDoCount,
       notes: values.notes,
-      tags: values.tags,
-      action: values.action
+      tags: [values.tags],
+      action: values.action,
+      priority: pri
     }
     setTodoCount(toDoCount + 1)
     setTodoData([...todoData, add])
     message.success('Saved!')
     form.resetFields()
     console.log("todoData: ", todoData)
-
   }
 
   const onNotesFinish = (values) => {
@@ -122,6 +161,7 @@ function App() {
   // isNotes will be true for modal with notes fields
   //         will be false for modal for todo list
   const clickModal = (isNotes) => {
+    form.resetFields()
     setNotes(isNotes)
     setModal(true)
   }
