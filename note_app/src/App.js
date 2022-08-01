@@ -11,37 +11,53 @@ import TodoForm from './Components/todoForm.js'
 function App() {
 
   const api = "http://localhost:5000"
-  const [data, setData] = useState(null)
+  const [notesData, setNotesData] = useState(null)
+  const [todoData, setTodoData] = useState(null)
   const [columns, setColumns] = useState(null)
-  const [count, setCount] = useState(4)
+  const [toDoCount, setTodoCount] = useState(4)
+  const [notesCount, setNotesCount] = useState(5)
+
   const [modal, setModal] = useState(false)
   const [notes, setNotes] = useState(false)
 
-  // const [todoModal, toModal] = useState(false)
 
-
-  async function getDataSource() {
-    console.log("getting data..")
+  async function getNotesData() {
+    //console.log("getting data..")
     axios.get(`${api}/notes`).then( res => {
       //console.log(res)
-      setData(res.data.data)
+      setNotesData(res.data)
+    })
+  }
+  async function getTodoData() {
+    //console.log("getting data..")
+    axios.get(`${api}/todo`).then( res => {
+      //console.log(res)
+      setTodoData(res.data.data)
       setColumns(res.data.columns)
     })
   }
 
-  data ? console.log("data: ", data) : getDataSource()
+  notesData ? todoData ? console.log("notesData: ", notesData, '\n', "todoData: ", todoData ) : getTodoData() : getNotesData()
 
 
-  const onFinish = (values) => {
-    console.log("onFinish: ", values)
+
+  const onTodoFinish = (values) => {
+    console.log("onTodoFinish: ", values)
     const add = {
-      key: count,
+      key: toDoCount,
       notes: values.notes,
       tags: values.tags,
       action: values.action
     }
-    setCount(count + 1)
-    setData([...data, add])
+    setTodoCount(toDoCount + 1)
+    setTodoData([...todoData, add])
+  }
+
+  const onNotesFinish = (values) => {
+    console.log("onNotesFinish: ", values)
+    const add = { note: values.notes, key: notesCount}
+    setNotesCount(toDoCount + 1)
+    setNotesData([...notesData, add])
   }
 
   const handleOk = () => {
@@ -51,7 +67,6 @@ function App() {
   const handleCancel = () => {
     setModal(false);
   };
-
 
   const clickNotes = () => {
     setNotes(true)
@@ -72,13 +87,13 @@ function App() {
         <Col span={10}>
           <Card title="To Do List">
             <Button onClick={clickTodo} style={{marginBottom: 5, marginTop: -5}}> <PlusOutlined/> </Button>
-            <Table columns={columns ? columns : null} dataSource={data ? data : null}/>
+            <Table columns={columns ? columns : null} dataSource={todoData ? todoData : null}/>
           </Card>
         </Col>
 
         <Col span={14}>
           <Card title="Notes">
-              <Cards data={data ? data : null}/>
+              <Cards data={notesData ? notesData : null}/>
               <Card.Grid hoverable={true}>
                 <Button onClick={clickNotes}> <PlusOutlined/> </Button>
               </Card.Grid>
@@ -93,8 +108,8 @@ function App() {
         footer= {[]}
         >
           {notes ? 
-          <NotesForm onFinish={onFinish} handleOk={handleOk} handleCancel={handleCancel} /> 
-          : <TodoForm onFinish={onFinish} handleOk={handleOk} handleCancel={handleCancel}/> }
+          <NotesForm onFinish={onNotesFinish} handleOk={handleOk} handleCancel={handleCancel} /> 
+          : <TodoForm onFinish={onTodoFinish} handleOk={handleOk} handleCancel={handleCancel}/> }
       </Modal>
 
 
