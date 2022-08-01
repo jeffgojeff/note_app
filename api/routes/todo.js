@@ -32,14 +32,14 @@ let data = [
   },
   {
     key: '4',
-    notes: 'do stuff!',
+    notes: 'get groceries!',
     tags: ['grocery'],
     priority: 4,
     action: ''
   },
   {
     key: '5',
-    notes: '123',
+    notes: 'do other stuff!',
     tags: ['reminder'],
     priority: 3,
     action: ''

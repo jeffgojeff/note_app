@@ -1,4 +1,4 @@
-import { Popconfirm, Tag, Button } from "antd"
+import { Popconfirm, Tag, Button, Popover } from "antd"
 import 'antd/dist/antd.css';
 import { DeleteOutlined, CheckOutlined } from '@ant-design/icons'
 import {setColor, priorityFilters} from './helper.js'
@@ -40,11 +40,14 @@ function columns(handleTodoDelete, handleTodoDone)
       dataIndex: 'action',
       key: 'action',
       align: 'right', 
-      render: (_, record) => 
+      render: (_, record) =>
         <>
-            <Button icon={<CheckOutlined/>} shape="circle"onClick={() => handleTodoDone(record.key)}/>
+            <Popover content={<>Mark As Done</>} placement="bottom">
+              <Button icon={<CheckOutlined/>} shape="circle"onClick={() => handleTodoDone(record.key) } />
+            </Popover>
+
             <Popconfirm title="Sure to delete?" onConfirm={() => handleTodoDelete(record.key)}>
-                <Button icon={<DeleteOutlined/>} style={{marginLeft: 8}} shape="circle" />
+              <Button icon={<DeleteOutlined/>} style={{marginLeft: 8}} shape="circle" danger/>
             </Popconfirm>
             
         </>

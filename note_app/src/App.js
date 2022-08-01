@@ -39,7 +39,7 @@ function App() {
   async function getTodoData() {
     //console.log("getting data..")
     axios.get(`${api}/todo`).then( res => {
-      //console.log("todoData: ", res.data)
+      console.log("todoData: ", res.data)
       setTodoData(res.data)
     }).catch((err) => {
       console.log(err)
@@ -121,14 +121,17 @@ function App() {
   //change todo item tag to done
   // alert user of sucessful change
   const handleTodoDone = (key) => {
+    let index = todoData.findIndex((x => x.key === key))
+    //console.log("index: ", index)
     let arr = todoData
-    let mess = arr[key].tags[0] === 'grocery' ? "In The Cart!" : "Task Completed!"
-    arr[key].tags[0] = 'done'
-    arr[key].priority = 5
+    let mess = arr[index].tags[0] === 'grocery' ? "In The Cart!" : "Task Completed!"
+    arr[index].tags[0] = 'done'
+    arr[index].priority = 5
+    
     setTodoData([...arr])
     message.success(mess)
     postNotesData("todo", arr)
-    //console.log("here: ", todoData)
+    console.log("here: ", todoData)
   }
 
 
