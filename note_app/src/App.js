@@ -18,7 +18,7 @@ function App() {
   const [notesData, setNotesData] = useState(null)
   const [todoData, setTodoData] = useState(null)
   const [toDoCount, setTodoCount] = useState(6)
-  const [notesCount, setNotesCount] = useState(5)
+  const [notesCount, setNotesCount] = useState(4)
 
   const [modal, setModal] = useState(false)
   const [notes, setNotes] = useState(false)
@@ -32,15 +32,27 @@ function App() {
     axios.get(`${api}/notes`).then( res => {
       console.log("notesData: ", res.data)
       setNotesData(res.data)
+    }).catch((err) => {
+      console.log(err)
     })
   }
   async function getTodoData() {
     //console.log("getting data..")
     axios.get(`${api}/todo`).then( res => {
-      console.log("todoData: ", res.data)
+      //console.log("todoData: ", res.data)
       setTodoData(res.data)
+    }).catch((err) => {
+      console.log(err)
     })
   }
+
+  async function postNotesData(end, data){
+    axios.post(`${api}/${end}`, data)
+    .then( res => {
+      //console.log("post: ", res)
+    }).catch((err) => console.log(err) )
+  }
+
 
   useEffect(() =>{
     if(!notesData && !todoData) {
@@ -54,28 +66,32 @@ function App() {
   const onTodoFinish = (values) => {
     console.log("values: ", values)
     let pri = setPriority(values.tags)
-    const add = {
+    let add = {
       key: toDoCount,
       notes: values.notes,
       tags: [values.tags],
       action: values.action,
       priority: pri
     }
+    add = [...todoData, add]
     setTodoCount(toDoCount + 1)
-    setTodoData([...todoData, add])
+    setTodoData(add)
     message.success('Saved!')
     form.resetFields()
-    console.log("todoData: ", todoData)
+    console.log("todoData: ", add)
+    postNotesData("todo", add)
   }
 
   //do this when notes form is successfully sumbitted
   const onNotesFinish = (values) => {
-    const add = { note: values.notes, key: notesCount}
+    let add = { note: values.notes, key: notesCount}
+    add = [...notesData, add]
     setNotesCount(notesCount + 1)
-    setNotesData([...notesData, add])
+    setNotesData(add)
     message.success('Saved!')
     form.resetFields()
-    console.log("notesData: ", notesData)
+    console.log("notesData: ", add)
+    postNotesData("notes", add)
   }
   
   // isNotes will be true for modal with notes fields
@@ -90,6 +106,7 @@ function App() {
   const handleTodoDelete = (key) => {
     const newData = todoData.filter((item) => item.key !== key);
     setTodoData(newData);
+    postNotesData("todo", newData)
     message.success("Item Removed!")
   };
 
@@ -97,6 +114,7 @@ function App() {
   const handleNotesDelete = (key) => {
     const newData = notesData.filter((item) => item.key !== key);
     setNotesData(newData);
+    postNotesData("notes", newData)
     message.success("Note Removed!")
   };
 
@@ -109,7 +127,8 @@ function App() {
     arr[key].priority = 5
     setTodoData([...arr])
     message.success(mess)
-    console.log(todoData)
+    postNotesData("todo", arr)
+    //console.log("here: ", todoData)
   }
 
 

@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-const data = [
+let data = [
   {
     key: '0',
     notes: 'hello',
@@ -14,7 +14,7 @@ const data = [
     notes: 'world',
     tags: ['medium'],
     priority: 1,
-    action: 'woooooo'
+    action: ''
   },
   {
     key: '2',
@@ -51,6 +51,16 @@ const data = [
 router.get('/', function(req, res, next) {
   res.send(data);
 });
+
+router.post('/', function(req, res, next){
+  try{
+      data = req.body
+      //console.log("data: ", data)
+      res.status(201).json(data)
+  } catch(err) {
+      console.log(err)
+  }
+})
 
 module.exports = router;
 

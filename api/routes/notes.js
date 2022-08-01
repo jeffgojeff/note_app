@@ -1,21 +1,21 @@
 var express = require('express');
 var router = express.Router();
 
-const data = [
+let data = [
     {
-        key: '1',
+        key: '0',
         note: 'hello'
     },    
     {
-        key: '2',
+        key: '1',
         note: 'world'
     },
     {
-        key: '3',
+        key: '2',
         note: '123'
     },
     {
-        key: '4',
+        key: '3',
         note: '456'
     }
 ]
@@ -24,6 +24,16 @@ const data = [
 router.get('/', function(req, res, next) {
   res.send(data);
 });
+
+router.post('/', function(req, res, next){
+    try{
+        data = req.body
+        //console.log("data: ", data)
+        res.status(201).json(data)
+    } catch(err) {
+        console.log(err)
+    }
+})
 
 module.exports = router;
 
