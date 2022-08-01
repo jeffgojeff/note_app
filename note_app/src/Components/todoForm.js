@@ -1,3 +1,5 @@
+//Function returns the form on the modal for new todo items 
+
 import 'antd/dist/antd.css';
 import {  Form, Input, Button, Select } from 'antd';
 const {Option} = Select

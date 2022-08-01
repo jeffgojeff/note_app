@@ -1,4 +1,4 @@
-//Function return notes data in Cards
+//Function returns notes data in Cards
 
 import 'antd/dist/antd.css';
 import { Card, Button } from 'antd';

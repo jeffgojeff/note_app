@@ -1,6 +1,7 @@
 import { Popconfirm, Tag, Button } from "antd"
 import 'antd/dist/antd.css';
 import { DeleteOutlined, CheckOutlined } from '@ant-design/icons'
+import {setColor, priorityFilters} from './helper.js'
 
 function columns(handleTodoDelete, handleTodoDone)
 {
@@ -20,49 +21,16 @@ function columns(handleTodoDelete, handleTodoDone)
       //a is selected filter b is the item item
       onFilter: (a, b) => a === b.tags[0],
       defaultSortOrder: 'ascend',
-      filters: [
-        {
-          text: 'High',
-          value: 'high'
-        },
-        {
-          text: 'Medium',
-          value: 'medium'
-        },
-        {
-          text: 'Low',
-          value: 'low'
-        },
-        {
-          text: 'Reminder',
-          value: 'reminder'
-        },
-        {
-          text: 'Grocery',
-          value: 'grocery'
-        },
-      ],
+      filters: priorityFilters,
       render: (_, {tags}) => (
         <>
           {tags ? tags.map((tag) => {
-            let color = ''
-            if(isNaN(tag)){
-              if(tag === 'low')
-                color = 'blue'
-              if(tag === 'medium')
-                color = 'yellow'
-              else if(tag === 'high')
-                color = 'volcano'
-              else if(tag === 'grocery')
-                color = 'green'
-              else if(tag === 'reminder')
-                color = 'purple'
-                
+            let color = setColor(tag)
               return(
                 <Tag color={color} key={tag}>
                   {tag.toUpperCase()}
                 </Tag>
-            )}
+            )
           }) : []}
       </>
       )
