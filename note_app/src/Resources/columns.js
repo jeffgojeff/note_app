@@ -1,8 +1,8 @@
 import { Popconfirm, Tag, Button } from "antd"
 import 'antd/dist/antd.css';
-import { DeleteOutlined } from '@ant-design/icons'
+import { DeleteOutlined, CheckOutlined } from '@ant-design/icons'
 
-function columns(handleTodoDelete)
+function columns(handleTodoDelete, handleTodoDone)
 {
     return (
     [
@@ -45,8 +45,10 @@ function columns(handleTodoDelete)
       render: (_, {tags}) => (
         <>
           {tags ? tags.map((tag) => {
-            let color = 'blue'
+            let color = ''
             if(isNaN(tag)){
+              if(tag === 'low')
+                color = 'blue'
               if(tag === 'medium')
                 color = 'yellow'
               else if(tag === 'high')
@@ -55,6 +57,7 @@ function columns(handleTodoDelete)
                 color = 'green'
               else if(tag === 'reminder')
                 color = 'purple'
+                
               return(
                 <Tag color={color} key={tag}>
                   {tag.toUpperCase()}
@@ -70,9 +73,13 @@ function columns(handleTodoDelete)
       key: 'action',
       align: 'right', 
       render: (_, record) => 
-        <Popconfirm title="Sure to delete?" onConfirm={() => handleTodoDelete(record.key)}>
-          <Button icon={<DeleteOutlined/>} shape="circle" ></Button>
-        </Popconfirm>
+        <>
+            <Button icon={<CheckOutlined/>} shape="circle"onClick={() => handleTodoDone(record.key)}/>
+            <Popconfirm title="Sure to delete?" onConfirm={() => handleTodoDelete(record.key)}>
+                <Button icon={<DeleteOutlined/>} style={{marginLeft: 8}} shape="circle" />
+            </Popconfirm>
+            
+        </>
     },
   ]
  )

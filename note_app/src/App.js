@@ -2,8 +2,8 @@ import React, {useState, useEffect} from 'react'
 import './App.css';
 import 'antd/dist/antd.css';
 import axios from 'axios'
-import { Checkbox, Table, Row, Col, Button, Modal, Form, Card, message, Popconfirm, Tag} from 'antd';
-import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
+import { Table, Row, Col, Button, Modal, Form, Card, message } from 'antd';
+import { PlusOutlined } from '@ant-design/icons'
 import Cards from './Components/cards.js'
 import NotesForm from './Components/notesForm.js'
 import TodoForm from './Components/todoForm.js'
@@ -18,7 +18,6 @@ function App() {
   const [todoData, setTodoData] = useState(null)
   const [toDoCount, setTodoCount] = useState(6)
   const [notesCount, setNotesCount] = useState(5)
-  const columns2 = {columns}
 
   const [modal, setModal] = useState(false)
   const [notes, setNotes] = useState(false)
@@ -60,8 +59,10 @@ function App() {
       pri = 2
     else if(values.tags === 'reminder')
       pri = 3
-    else
+    else if(values.tags === 'grocery')
       pri = 4
+    else
+      pri = 5
     const add = {
       key: toDoCount,
       notes: values.notes,
@@ -100,11 +101,20 @@ function App() {
   };
 
   const handleNotesDelete = (key) => {
-    console.log("key: ", key)
     const newData = notesData.filter((item) => item.key !== key);
     setNotesData(newData);
     message.success("Note Removed!")
   };
+
+  const handleTodoDone = (key) => {
+    let arr = todoData
+    let mess = arr[key].tags[0] === 'grocery' ? "In The Cart!" : "Task Completed!"
+    arr[key].tags[0] = 'done'
+    arr[key].priority = 5
+    setTodoData([...arr])
+    message.success(mess)
+    console.log(todoData)
+  }
 
 
   return (
@@ -115,15 +125,15 @@ function App() {
         <Col span={10}>
           <Card title="To Do List">
             <Button onClick={() => clickModal(false)} style={{marginBottom: 5, marginTop: -5}}> <PlusOutlined/> </Button>
-            <Table columns={columns(handleTodoDelete)} dataSource={todoData ? todoData : null}/>
+            <Table columns={columns(handleTodoDelete, handleTodoDone)} dataSource={todoData ? todoData : null}/>
           </Card>
         </Col>
 
         <Col span={14}>
           <Card title="Notes">
               <Cards data={notesData ? notesData : null} onClick={handleNotesDelete}/>
-              <Card.Grid hoverable={true}>
-                <Button onClick={() => clickModal(true)}> <PlusOutlined/> </Button>
+              <Card.Grid hoverable={true} style={{textAlign: 'center'}}>
+                <Button onClick={() => clickModal(true)} icon={<PlusOutlined/>} shape="circle" size="large" />
               </Card.Grid>
           </Card>
         </Col>
