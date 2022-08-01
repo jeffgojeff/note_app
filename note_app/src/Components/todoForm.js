@@ -15,7 +15,6 @@ function TodoForm(props) {
                     message: "Please Input A Task"
                 }
             ]}
-        
         >
             <Input />
         </Form.Item>
@@ -26,8 +25,8 @@ function TodoForm(props) {
             <Input />
         </Form.Item>
         <Form.Item wrapperCol={{offset: 8,  span: 16 }}>
-            <Button type="primary" htmlType="submit" onClick={props.handleOk} style={{marginRight: 10}}> Submit </Button>
-            <Button key="back" onClick={props.handleCancel}>Cancel</Button>
+            <Button type="primary" htmlType="submit" onClick={() => props.set(false)} style={{marginRight: 10}}> Submit </Button>
+            <Button key="back" onClick={() => props.set(false)}>Cancel</Button>
         </Form.Item>
     </Form>
     )

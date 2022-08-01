@@ -97,14 +97,6 @@ function App() {
     console.log("notesData: ", notesData)
   }
 
-  const handleOk = () => {
-    setModal(false);
-  };
-
-  const handleCancel = () => {
-    setModal(false);
-  };
-
   const clickNotes = () => {
     setNotes(true)
     setModal(true)
@@ -156,12 +148,12 @@ function App() {
       <Modal 
         title={notes ? "Add Note" : "Add Todo" } 
         visible={modal} 
-        onCancel={handleCancel}
+        onCancel={() => setModal(false)}
         footer= {[]}
         >
           {notes ? 
-          <NotesForm onFinish={onNotesFinish} handleOk={handleOk} handleCancel={handleCancel} form={form}/> 
-          : <TodoForm onFinish={onTodoFinish} handleOk={handleOk} handleCancel={handleCancel} form={form}/> }
+          <NotesForm onFinish={onNotesFinish} set={setModal} form={form}/> 
+          : <TodoForm onFinish={onTodoFinish} set ={setModal} form={form}/> }
       </Modal>
 
 
