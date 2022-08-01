@@ -1,12 +1,14 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import './App.css';
 import 'antd/dist/antd.css';
 import axios from 'axios'
-import { Checkbox, Table, Row, Col, Button, Modal, Form, Input, Card} from 'antd';
+import { Checkbox, Table, Row, Col, Button, Modal, Form, Card, message} from 'antd';
 import { PlusOutlined } from '@ant-design/icons'
 import Cards from './Components/cards.js'
 import NotesForm from './Components/notesForm.js'
 import TodoForm from './Components/todoForm.js'
+
+
 
 function App() {
 
@@ -19,30 +21,40 @@ function App() {
 
   const [modal, setModal] = useState(false)
   const [notes, setNotes] = useState(false)
+  const [form] = Form.useForm();
+
 
 
   async function getNotesData() {
     //console.log("getting data..")
     axios.get(`${api}/notes`).then( res => {
-      //console.log(res)
+      console.log("notesData: ", res.data)
       setNotesData(res.data)
     })
   }
   async function getTodoData() {
     //console.log("getting data..")
     axios.get(`${api}/todo`).then( res => {
-      //console.log(res)
+      console.log("todoData: ", res.data)
       setTodoData(res.data.data)
       setColumns(res.data.columns)
     })
   }
 
-  notesData ? todoData ? console.log("notesData: ", notesData, '\n', "todoData: ", todoData ) : getTodoData() : getNotesData()
+  useEffect(() =>{
+    if(!notesData && !todoData) {
+      console.log("getting data..")
+      getNotesData()
+      getTodoData()
+    }
+  }, [])
+
+ 
 
 
 
   const onTodoFinish = (values) => {
-    console.log("onTodoFinish: ", values)
+    //console.log("onTodoFinish: ", values)
     const add = {
       key: toDoCount,
       notes: values.notes,
@@ -51,13 +63,20 @@ function App() {
     }
     setTodoCount(toDoCount + 1)
     setTodoData([...todoData, add])
+    message.success('Saved!')
+    form.resetFields()
+    console.log("todoData: ", todoData)
+
   }
 
   const onNotesFinish = (values) => {
-    console.log("onNotesFinish: ", values)
+    //console.log("onNotesFinish: ", values)
     const add = { note: values.notes, key: notesCount}
-    setNotesCount(toDoCount + 1)
+    setNotesCount(notesCount + 1)
     setNotesData([...notesData, add])
+    message.success('Saved!')
+    form.resetFields()
+    console.log("notesData: ", notesData)
   }
 
   const handleOk = () => {
@@ -108,8 +127,8 @@ function App() {
         footer= {[]}
         >
           {notes ? 
-          <NotesForm onFinish={onNotesFinish} handleOk={handleOk} handleCancel={handleCancel} /> 
-          : <TodoForm onFinish={onTodoFinish} handleOk={handleOk} handleCancel={handleCancel}/> }
+          <NotesForm onFinish={onNotesFinish} handleOk={handleOk} handleCancel={handleCancel} form={form}/> 
+          : <TodoForm onFinish={onTodoFinish} handleOk={handleOk} handleCancel={handleCancel} form={form}/> }
       </Modal>
 
 
