@@ -14,7 +14,13 @@ function Cards(props) {
                 <Card.Grid title={x.key} key={x.key} hoverable={true}>
                     {x.note}
                     <br/>
-                    <Button icon={<DeleteOutlined />} shape="circle" size="small" onClick={() => props.onClick(x.key)} style={{float: 'right'}}></Button>
+                    <Button 
+                        icon={<DeleteOutlined />} 
+                        shape="circle" 
+                        size="small" 
+                        onClick={() => props.onClick(x.key)} 
+                        style={{float: 'right'}}>
+                    </Button>
                 </Card.Grid>
           )
       }) : null

@@ -41,7 +41,6 @@ function App() {
         <Popconfirm title="Sure to delete?" onConfirm={() => handleTodoDelete(record.key)}>
           <Button icon={<DeleteOutlined/>} shape="circle" ></Button>
         </Popconfirm>
-      
     },
   ]
 
@@ -119,14 +118,16 @@ function App() {
   const handleTodoDelete = (key) => {
     const newData = todoData.filter((item) => item.key !== key);
     setTodoData(newData);
-    setTodoCount(toDoCount - 1)
+    //setTodoCount(toDoCount - 1)
+    message.success("Item Removed!")
   };
 
   const handleNotesDelete = (key) => {
     console.log("key: ", key)
     const newData = notesData.filter((item) => item.key !== key);
     setNotesData(newData);
-    setNotesCount(notesCount - 1)
+    //setNotesCount(notesCount - 1)
+    message.success("Note Removed!")
   };
 
 
