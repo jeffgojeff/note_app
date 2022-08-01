@@ -8,6 +8,7 @@ import Cards from './Components/cards.js'
 import NotesForm from './Components/notesForm.js'
 import TodoForm from './Components/todoForm.js'
 import columns from './Resources/columns.js'
+import {setPriority} from './Resources/helper.js'
 
 
 
@@ -23,7 +24,9 @@ function App() {
   const [notes, setNotes] = useState(false)
   const [form] = Form.useForm();
 
+  
 
+  //get data from endpoint
   async function getNotesData() {
     //console.log("getting data..")
     axios.get(`${api}/notes`).then( res => {
@@ -47,22 +50,10 @@ function App() {
     }
   }, [])
 
-
+  //do this when todo form is successfully submitted
   const onTodoFinish = (values) => {
     console.log("values: ", values)
-    let pri = -1
-    if(values.tags === 'high')
-      pri = 0
-    else if(values.tags === 'medium')
-      pri = 1
-    else if(values.tags === 'low')
-      pri = 2
-    else if(values.tags === 'reminder')
-      pri = 3
-    else if(values.tags === 'grocery')
-      pri = 4
-    else
-      pri = 5
+    let pri = setPriority(values.tags)
     const add = {
       key: toDoCount,
       notes: values.notes,
@@ -77,6 +68,7 @@ function App() {
     console.log("todoData: ", todoData)
   }
 
+  //do this when notes form is successfully sumbitted
   const onNotesFinish = (values) => {
     const add = { note: values.notes, key: notesCount}
     setNotesCount(notesCount + 1)
@@ -94,18 +86,22 @@ function App() {
     setModal(true)
   }
 
+  //remove item from table, alert user of successful deletion
   const handleTodoDelete = (key) => {
     const newData = todoData.filter((item) => item.key !== key);
     setTodoData(newData);
     message.success("Item Removed!")
   };
 
+  //remove note, alert user of successful deletion
   const handleNotesDelete = (key) => {
     const newData = notesData.filter((item) => item.key !== key);
     setNotesData(newData);
     message.success("Note Removed!")
   };
 
+  //change todo item tag to done
+  // alert user of sucessful change
   const handleTodoDone = (key) => {
     let arr = todoData
     let mess = arr[key].tags[0] === 'grocery' ? "In The Cart!" : "Task Completed!"

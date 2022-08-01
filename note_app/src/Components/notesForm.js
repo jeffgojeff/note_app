@@ -1,3 +1,5 @@
+//Function returns the form on the modal for new notes 
+
 import 'antd/dist/antd.css';
 import {  Form, Input, Button } from 'antd';
 const { TextArea } = Input
