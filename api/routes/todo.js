@@ -15,8 +15,9 @@ const columns = [
   {
     title: 'Action',
     dataIndex: 'action',
-    key: 'action'
-  },
+    key: 'action',
+  }
+
 ]
 const dataSource = [
   {
