@@ -3,45 +3,47 @@
 var express = require('express');
 var router = express.Router();
 
+//priority 0-high 1-med 2-low 3-reminder 4-grocery
+
 let data = [
   {
     key: 4,
-    notes: 'get groceries!',
+    notes: 'Get groceries!',
     tags: ['grocery'],
     priority: 4,
     action: ''
   },
   {
     key: 1,
-    notes: 'world',
+    notes: 'Water plants',
     tags: ['medium'],
     priority: 1,
     action: ''
   },
   {
     key: 2,
-    notes: '123',
+    notes: 'Call that person back',
     tags: ['low'],
     priority: 2,
     action: ''
   },
   {
     key: 3,
-    notes: 'hello',
-    tags: ['high'],
-    priority: 0,
+    notes: 'Hello world',
+    tags: ['low'],
+    priority: 2,
     action: ''
   },
   {
     key: 6,
-    notes: 'do other stuff!',
+    notes: 'Do other stuff!',
     tags: ['reminder'],
     priority: 3,
     action: ''
   },
   {
     key: 0,
-    notes: 'hello',
+    notes: 'Crush this interview!',
     tags: ['high'],
     priority: 0,
     action: '',

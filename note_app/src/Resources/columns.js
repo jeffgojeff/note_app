@@ -8,7 +8,7 @@ function columns(handleTodoDelete, handleTodoDone)
     return (
     [
     {
-      title: 'Notes',
+      title: 'Item',
       dataIndex: 'notes',
       key: 'notes'
     },
