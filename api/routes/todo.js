@@ -1,3 +1,5 @@
+//todo endpoint
+
 var express = require('express');
 var router = express.Router();
 
@@ -55,7 +57,6 @@ router.get('/', function(req, res, next) {
 router.post('/', function(req, res, next){
   try{
       data = req.body
-      //console.log("data: ", data)
       res.status(201).json(data)
   } catch(err) {
       console.log(err)
