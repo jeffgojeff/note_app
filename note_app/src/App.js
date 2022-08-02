@@ -1,3 +1,5 @@
+//Application to store todo list & notes
+
 import React, {useState, useEffect} from 'react'
 import './App.css';
 import 'antd/dist/antd.css';
@@ -25,7 +27,6 @@ function App() {
 
   //get data from endpoint
   async function getNotesData() {
-    //console.log("getting data..")
     axios.get(`${api}/notes`).then( res => {
       console.log("notesData: ", res.data)
       setNotesData(res.data)
@@ -35,7 +36,6 @@ function App() {
   }
 
   async function getTodoData() {
-    //console.log("getting data..")
     axios.get(`${api}/todo`).then( res => {
       console.log("todoData: ", res.data)
       setTodoData(res.data)
@@ -47,7 +47,6 @@ function App() {
   async function postNotesData(end, data){
     axios.post(`${api}/${end}`, data)
     .then( res => {
-      //console.log("post: ", res)
     }).catch((err) => console.log(err) )
   }
 
@@ -62,7 +61,6 @@ function App() {
 
   //do this when todo form is successfully submitted
   const onTodoFinish = (values) => {
-    //console.log("values: ", values)
     let pri = setPriority(values.tags)
     let add = {
       key: freeKey(todoData),
