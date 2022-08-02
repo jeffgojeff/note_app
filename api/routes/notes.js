@@ -3,19 +3,19 @@ var router = express.Router();
 
 let data = [
     {
-        key: '0',
+        key: 0,
         note: 'hello'
     },    
     {
-        key: '1',
+        key: 1,
         note: 'world'
     },
     {
-        key: '2',
+        key: 2,
         note: '123'
     },
     {
-        key: '3',
+        key: 3,
         note: '456'
     }
 ]

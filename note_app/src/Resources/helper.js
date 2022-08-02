@@ -33,6 +33,29 @@ function setColor(tag){
     return color
 }
 
+//find freeKey availible in dataSets passed
+//return freeKey
+function freeKey(data) {
+  data.sort((a,b) => { return a.key - b.key })
+  let k
+  data.some((e,i,a) => {
+    if(e.key - i > 1 ){
+      k = i
+      return true
+    }
+    if(i === (a.length - 1)){
+      k = e.key+1
+      return true
+    }
+    if(e.key+1 != (a[i+1].key)){
+      k = e.key+1
+      return true
+    }
+  })
+  console.log("freeKey: ", k)
+  return k
+}
+
 const priorityFilters = [
     {
       text: 'High',
@@ -56,4 +79,4 @@ const priorityFilters = [
     },
   ]
 
-export { setPriority, setColor, priorityFilters }
+export { setPriority, setColor, priorityFilters, freeKey }

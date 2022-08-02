@@ -8,7 +8,7 @@ import Cards from './Components/cards.js'
 import NotesForm from './Components/notesForm.js'
 import TodoForm from './Components/todoForm.js'
 import columns from './Resources/columns.js'
-import {setPriority} from './Resources/helper.js'
+import {setPriority, freeKey} from './Resources/helper.js'
 
 
 
@@ -17,14 +17,11 @@ function App() {
   const api = "http://localhost:5000"
   const [notesData, setNotesData] = useState(null)
   const [todoData, setTodoData] = useState(null)
-  const [toDoCount, setTodoCount] = useState(6)
-  const [notesCount, setNotesCount] = useState(4)
 
   const [modal, setModal] = useState(false)
   const [notes, setNotes] = useState(false)
   const [form] = Form.useForm();
 
-  
 
   //get data from endpoint
   async function getNotesData() {
@@ -36,6 +33,7 @@ function App() {
       console.log(err)
     })
   }
+
   async function getTodoData() {
     //console.log("getting data..")
     axios.get(`${api}/todo`).then( res => {
@@ -53,28 +51,27 @@ function App() {
     }).catch((err) => console.log(err) )
   }
 
-
   useEffect(() =>{
     if(!notesData && !todoData) {
       console.log("getting data..")
       getNotesData()
       getTodoData()
     }
-  }, [])
+  })
+
 
   //do this when todo form is successfully submitted
   const onTodoFinish = (values) => {
-    console.log("values: ", values)
+    //console.log("values: ", values)
     let pri = setPriority(values.tags)
     let add = {
-      key: toDoCount,
+      key: freeKey(todoData),
       notes: values.notes,
       tags: [values.tags],
       action: values.action,
       priority: pri
     }
     add = [...todoData, add]
-    setTodoCount(toDoCount + 1)
     setTodoData(add)
     message.success('Saved!')
     form.resetFields()
@@ -84,9 +81,8 @@ function App() {
 
   //do this when notes form is successfully sumbitted
   const onNotesFinish = (values) => {
-    let add = { note: values.notes, key: notesCount}
+    let add = { note: values.notes, key: freeKey(notesData)}
     add = [...notesData, add]
-    setNotesCount(notesCount + 1)
     setNotesData(add)
     message.success('Saved!')
     form.resetFields()
@@ -106,6 +102,7 @@ function App() {
   const handleTodoDelete = (key) => {
     const newData = todoData.filter((item) => item.key !== key);
     setTodoData(newData);
+    console.log("todoData: ", newData)
     postNotesData("todo", newData)
     message.success("Item Removed!")
   };
@@ -122,16 +119,13 @@ function App() {
   // alert user of sucessful change
   const handleTodoDone = (key) => {
     let index = todoData.findIndex((x => x.key === key))
-    //console.log("index: ", index)
     let arr = todoData
     let mess = arr[index].tags[0] === 'grocery' ? "In The Cart!" : "Task Completed!"
     arr[index].tags[0] = 'done'
     arr[index].priority = 5
-    
     setTodoData([...arr])
-    message.success(mess)
     postNotesData("todo", arr)
-    console.log("here: ", todoData)
+    message.success(mess)
   }
 
 
@@ -167,13 +161,7 @@ function App() {
           <NotesForm onFinish={onNotesFinish} set={setModal} form={form}/> 
           : <TodoForm onFinish={onTodoFinish} set ={setModal} form={form}/> }
       </Modal>
-
-
-
     </>
-
-
-
   );
 }
 

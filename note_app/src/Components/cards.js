@@ -5,7 +5,6 @@ import { Card, Button } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons'
 
 
-
 function Cards(props) {
 
     return props.data ? props.data.map( x => {
